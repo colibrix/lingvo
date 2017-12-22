@@ -1,0 +1,2 @@
+DEFAULT_FILE_NAME = "DICTIONARY.txt"
+DICTIONARY_PATH = 'dictionaries/'
