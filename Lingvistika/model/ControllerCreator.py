@@ -5,13 +5,13 @@ from nltk import word_tokenize
 from nltk.stem.snowball import PorterStemmer
 
 # for initial forms
+from model.Constants import *
+
 ps = PorterStemmer()
 from nltk.stem.wordnet import WordNetLemmatizer
 
 wnl = WordNetLemmatizer()
 
-
-# SAVING MODE : FREQUENCY, TAG, INITIAL FORM
 def create_small_dictionary(input_file):
     new_small_dictionary = {}
     textFile = open(input_file, 'r')
@@ -25,18 +25,18 @@ def create_small_dictionary(input_file):
         word = word.lower()
         if word in new_small_dictionary:
             # recount frequency
-            frequency = new_small_dictionary[word][0]
+            frequency = new_small_dictionary[word][FREQUENCY]
             frequency += 1
-            new_small_dictionary[word][0] = frequency
+            new_small_dictionary[word][FREQUENCY] = frequency
 
             # tags of word
-            current_tag_string = new_small_dictionary[word][1]
+            current_tag_string = new_small_dictionary[word][TAG]
             current_tags = current_tag_string.split(' ')
 
             # add new tags, if it not in str
             if tag not in current_tags:
                 current_tag_string += " " + tag
-                new_small_dictionary[word][1] = current_tag_string
+                new_small_dictionary[word][TAG] = current_tag_string
 
         else:   # add new word with frequency equals 1, current tag, initial form
             initialForm = wnl.lemmatize(word)
@@ -56,18 +56,18 @@ def create_small_dictionary_text(input_text):
         word = word.lower()
         if word in new_small_dictionary:
             # recount frequency
-            frequency = new_small_dictionary[word][0]
+            frequency = new_small_dictionary[word][FREQUENCY]
             frequency += 1
-            new_small_dictionary[word][0] = frequency
+            new_small_dictionary[word][FREQUENCY] = frequency
 
             # tags of word
-            current_tag_string = new_small_dictionary[word][1]
+            current_tag_string = new_small_dictionary[word][TAG]
             current_tags = current_tag_string.split(' ')
 
             # add new tags, if it not in str
             if tag not in current_tags:
                 current_tag_string += " " + tag
-                new_small_dictionary[word][1] = current_tag_string
+                new_small_dictionary[word][TAG] = current_tag_string
 
         else:   # add new word with frequency equals 1, current tag, initial form
             initialForm = wnl.lemmatize(word)
@@ -101,21 +101,18 @@ def addTextInDictionary(current_dictionary, new_dictionary):
         word = word.lower()
         if word in new_dictionary:
             # frequency
-            frequency = new_dictionary[word][0]
-            frequency += current_dictionary[word][0]
-            #new_dictionary[word][0] = frequency
+            frequency = new_dictionary[word][FREQUENCY]
+            frequency += current_dictionary[word][FREQUENCY]
 
             # tags
-            current_tags = current_dictionary[word][1].split(' ')
-            current_tag_string = new_dictionary[word][1]
+            current_tags = current_dictionary[word][TAG].split(' ')
+            current_tag_string = new_dictionary[word][TAG]
             new_tags = current_tag_string.split(' ')
 
             new_tag_string2 = newTagString(current_tags, new_tags, current_tag_string)
-            #new_dictionary[word][1] = new_tag_string2
 
-            new_dictionary[word] = [frequency, new_tag_string2, new_dictionary[word][2]]
+            new_dictionary[word] = [frequency, new_tag_string2, new_dictionary[word][BEGIN_FORM]]
         else:
-            new_dictionary[word] = [current_dictionary[word][0], current_dictionary[word][1],
-                                    current_dictionary[word][2]]
+            new_dictionary[word] = [current_dictionary[word][FREQUENCY], current_dictionary[word][TAG],
+                                    current_dictionary[word][BEGIN_FORM]]
     return new_dictionary
-            # print("Adding of new text in dictionary was completed.")
