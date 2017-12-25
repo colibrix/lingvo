@@ -1,2 +1,4 @@
 DEFAULT_FILE_NAME = "DICTIONARY.txt"
 DICTIONARY_PATH = 'dictionaries/'
+
+FREQUENCY, TAG, BEGIN_FORM = range(3)
